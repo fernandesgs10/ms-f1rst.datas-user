@@ -1,0 +1,47 @@
+application:
+  name: ms-f1rst-datas-user
+
+main:
+  allow-bean-definition-overriding: true
+
+banner:
+  location: classpath:/banner.txt
+
+server:
+  port: 8080
+  servlet:
+    context-path: /f1rst-test
+
+logging:
+  level:
+    org.springframework.security: TRACE
+
+# Configuração de URL externa para buscar dados de CEP
+url-client-cep: http://viacep.com.br/ws/
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db-desafio-backend
+    username: desafio
+    password: desafio
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migrations
+
+  # Configuração do ActiveMQ em modo embutido
+  artemis:
+    mode: embedded
+    packages:
+      trust-all: false
+      trusted-packages: java.lang,java.util,org.apache.activemq,hello.bean
+
+jwt:
+  secret: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
+  expiration: 3600000 # Tempo de expiração em milissegundos (1 hora)
