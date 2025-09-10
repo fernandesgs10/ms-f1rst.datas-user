@@ -7,18 +7,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "tb_account_payment")
 public class AccountPaymentEntity extends CreateUpdateEntity implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +34,7 @@ public class AccountPaymentEntity extends CreateUpdateEntity implements Serializ
     @Column(name = "amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
 
-    @Column(name = "description", length = 255)
+    @Column(name = "description")
     private String description;
 
     @Column(name = "status")

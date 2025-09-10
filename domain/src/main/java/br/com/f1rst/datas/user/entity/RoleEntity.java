@@ -12,6 +12,7 @@ import jakarta.persistence.TemporalType;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -19,13 +20,13 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "tb_roles")
-public class RoleEntity {
+public class RoleEntity  implements Serializable {
 
     @Id
-    @Column(name = "id", length = 255, unique = true, nullable = false)
+    @Column(name = "id",  unique = true, nullable = false)
     private String id;
 
-    @Column(name = "role_name", nullable = false, length = 255)
+    @Column(name = "role_name", nullable = false)
     private String roleName;
 
     @ElementCollection
@@ -33,14 +34,14 @@ public class RoleEntity {
     @Column(name = "permission")
     private List<String> permissions;
 
-    @Column(name = "nm_created", nullable = false, length = 255)
+    @Column(name = "nm_created", nullable = false)
     private String nmCreated;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "dt_created", nullable = false, updatable = false)
     private Date dtCreated;
 
-    @Column(name = "nm_edited", length = 255)
+    @Column(name = "nm_edited")
     private String nmEdited;
 
     @Temporal(TemporalType.TIMESTAMP)

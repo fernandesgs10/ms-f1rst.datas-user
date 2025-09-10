@@ -9,8 +9,5 @@ public class TokenDto {
 
     private String expiresIn;
 
-    public String getToken() {
-        return token;
-    }
 
 }

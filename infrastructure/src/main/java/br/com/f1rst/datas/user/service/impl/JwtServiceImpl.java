@@ -30,6 +30,7 @@ public class JwtServiceImpl implements JwtService {
     private long jwtExpiration;
 
 
+    @SuppressWarnings("unchecked")
     @Override
     public String refreshToken(String token) {
         if (isTokenExpired(token)) {

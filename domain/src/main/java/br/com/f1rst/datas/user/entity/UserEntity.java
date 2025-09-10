@@ -15,6 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -24,28 +25,28 @@ import java.util.stream.Collectors;
 @Getter
 @Entity
 @Table(name = "tb_users")
-public class UserEntity implements UserDetails {
+public class UserEntity implements UserDetails, Serializable {
 
     @Id
-    @Column(name = "id", length = 255, unique = true, nullable = false)
+    @Column(name = "id",  unique = true, nullable = false)
     private String id;
 
-    @Column(name = "password", nullable = false, length = 255)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "email", nullable = false, unique = true, length = 255)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "first_name", length = 255)
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "last_name", length = 255)
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "doc", length = 255)
+    @Column(name = "doc")
     private String doc;
 
-    @Column(name = "cellphone", length = 255)
+    @Column(name = "cellphone")
     private String cellphone;
 
     @Column(name = "status", nullable = false)
@@ -57,7 +58,7 @@ public class UserEntity implements UserDetails {
     @Column(name = "dt_birthday")
     private Date dtBirthday;
 
-    @Column(name = "sms_token", length = 255)
+    @Column(name = "sms_token")
     private String smsToken;
 
     @ManyToMany
@@ -69,14 +70,14 @@ public class UserEntity implements UserDetails {
     private List<RoleEntity> roles;
 
 
-    @Column(name = "nm_created", nullable = false, length = 255)
+    @Column(name = "nm_created", nullable = false)
     private String nmCreated;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "dt_created", nullable = false, updatable = false)
     private Date dtCreated;
 
-    @Column(name = "nm_edited", length = 255)
+    @Column(name = "nm_edited")
     private String nmEdited;
 
     @Temporal(TemporalType.TIMESTAMP)

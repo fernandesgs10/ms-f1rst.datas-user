@@ -7,16 +7,16 @@ import java.util.Date;
 
 public class ResponseTemplateDto <T>{
 
-    public static ResponseDto createResponse(Object data, HttpStatus status) {
+    public static ResponseDto<?> createResponse(Object data, HttpStatus status) {
         return createResponseTemplate(data, status, null);
     }
 
-    public static ResponseDto createResponse(Page<?> page, HttpStatus status) {
+    public static ResponseDto<?> createResponse(Page<?> page, HttpStatus status) {
         return createResponseTemplate(null, status, page);
     }
 
-    private static ResponseDto createResponseTemplate(Object data, HttpStatus status, Page<?> page) {
-        ResponseDto responseDto = new ResponseDto();
+    private static ResponseDto<?> createResponseTemplate(Object data, HttpStatus status, Page<?> page) {
+        var responseDto = new ResponseDto<>();
         responseDto.setHttpStatus(status);
         responseDto.setDate(new Date());
 

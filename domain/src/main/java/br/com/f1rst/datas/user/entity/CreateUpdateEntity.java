@@ -11,10 +11,12 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
+
 @Data
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class CreateUpdateEntity {
+public abstract class CreateUpdateEntity implements Serializable {
 
     @Column(name = "nm_created", nullable = false, updatable = false)
     private String nmCreated;
