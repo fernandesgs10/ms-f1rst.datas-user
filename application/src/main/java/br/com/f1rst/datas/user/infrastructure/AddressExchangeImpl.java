@@ -20,14 +20,15 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.LinkedHashMap;
 
-@SuppressWarnings("rawtypes")
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class AddressExchangeImpl implements AddressExchange {
 
     private final MensagemComponent mensagemComponent;
+
     private final ObjectMapper objectMapper;
+
     @Value("${url-client-cep}")
     private String urlClientCep;
     private final LogAddressRepository logAddressRepository;
@@ -39,10 +40,8 @@ public class AddressExchangeImpl implements AddressExchange {
                         "accountpayment.id.notnull"
                 ));
 
-        AddressDto addressResponse = objectMapper
+        return objectMapper
                 .readValue(buscarCep(cep), AddressDto.class);
-
-        return addressResponse;
     }
 
     @Override

@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
-@SuppressWarnings({"rawtypes"})
 @Slf4j
 @RestController
 @RequestMapping(value = "v1/authentication")
@@ -40,7 +39,7 @@ public class AuthenticationController {
             @ApiResponse(code = 401, message = "Unauthorized access"),
             @ApiResponse(code = 500, message = "Unknown error")
     })
-    public ResponseEntity<ResponseDto> login(@RequestBody UserDto loginDto) {
+    public ResponseEntity<?> login(@RequestBody UserDto loginDto) {
         log.info("Starting login process for {}", loginDto);
 
         Optional<UserEntity> authMongoOptional = authenticationService.login(loginDto);
@@ -51,9 +50,10 @@ public class AuthenticationController {
     }
 
 
+    @SuppressWarnings("rawtypes")
     public ResponseEntity<ResponseDto> getResponseDtoResponseEntity(UserEntity user) {
         if (user == null) {
-            ResponseDto response = ResponseTemplateDto.createResponse(null, HttpStatus.UNAUTHORIZED);
+            var response = ResponseTemplateDto.createResponse(null, HttpStatus.UNAUTHORIZED);
             log.info("Authentication UNAUTHORIZED");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
@@ -65,7 +65,7 @@ public class AuthenticationController {
         String expiresIn = UserUtil.convertMillisToHours(jwtService.getExpirationTime());
         loginResponse.setExpiresIn(expiresIn);
 
-        ResponseDto response = ResponseTemplateDto.createResponse(loginResponse, HttpStatus.OK);
+        var response = ResponseTemplateDto.createResponse(loginResponse, HttpStatus.OK);
         log.info("User authenticated successfully");
         return ResponseEntity.ok(response);
     }

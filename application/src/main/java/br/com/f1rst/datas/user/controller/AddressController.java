@@ -1,6 +1,5 @@
 package br.com.f1rst.datas.user.controller;
 
-import br.com.f1rst.datas.user.dto.ResponseDto;
 import br.com.f1rst.datas.user.dto.ResponseTemplateDto;
 import br.com.f1rst.datas.user.service.AddressService;
 import io.swagger.annotations.ApiOperation;
@@ -21,17 +20,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-
 @Slf4j
 @RestController
 @RequestMapping("v1/address")
 @RequiredArgsConstructor
-public class AddressController extends AbstractController {
+public class AddressController {
 
     private final AddressService addressService;
     private final JmsTemplate jmsTemplate;
-
 
     @GetMapping("/cep/{cep}")
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
@@ -41,7 +37,7 @@ public class AddressController extends AbstractController {
             @ApiResponse(code = 403, message = "Access denied"),
             @ApiResponse(code = 500, message = "Internal server error")
     })
-    public ResponseEntity<ResponseDto> findAddressByCep(@PathVariable("cep") String cep, HttpServletRequest request) {
+    public ResponseEntity<?> findAddressByCep(@PathVariable("cep") String cep, HttpServletRequest request) {
         log.info("find cep by: {}", cep);
 
         String userIpAddress = request.getRemoteAddr();
@@ -55,10 +51,10 @@ public class AddressController extends AbstractController {
         log.info("Authenticated user: {}", username);
         var addressByCep = addressService.findAddressByCep(cep);
 
-        Object objDatas[] = {addressByCep, username, userIpAddress};
+        Object[] objDatas = {addressByCep, username, userIpAddress};
         jmsTemplate.convertAndSend("address-log", objDatas);
 
-        ResponseDto response = ResponseTemplateDto.createResponse(addressByCep, HttpStatus.OK);
+        var response = ResponseTemplateDto.createResponse(addressByCep, HttpStatus.OK);
         log.info("find cep successfully: {}", response);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);

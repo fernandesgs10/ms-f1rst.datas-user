@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@SuppressWarnings("rawtypes")
 @Service
 @AllArgsConstructor
 public class AuthenticationExchangeImpl implements AuthenticationExchange {
@@ -20,7 +19,6 @@ public class AuthenticationExchangeImpl implements AuthenticationExchange {
     @Override
     public Optional<UserEntity> login(UserDto userDto) {
         String encryptPassword = EncryptionPwUtil.encrypt(userDto.getPassword());
-        Optional<UserEntity> userMongo = authenticationRepository.findByEmailAndPassword(userDto.getEmail(), encryptPassword);
-        return userMongo;
+        return authenticationRepository.findByEmailAndPassword(userDto.getEmail(), encryptPassword);
     }
 }

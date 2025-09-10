@@ -1,6 +1,5 @@
 package br.com.f1rst.datas.user.queue;
 
-import br.com.f1rst.datas.user.dto.AddressDto;
 import br.com.f1rst.datas.user.service.AddressService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +15,7 @@ public class ReceiverQueue {
 
     @JmsListener(destination = "address-log", containerFactory = "myFactory")
     public void receiveMessage(Object[] objectDatas) {
-        //log.info("Received addressEntity {}", objectDatas);
+        log.info("Received addressEntity {}", objectDatas);
         addressService.saveLog(objectDatas);
     }
 }
-

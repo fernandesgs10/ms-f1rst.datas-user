@@ -26,19 +26,31 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public Optional<UserEntity> login(UserDto userDto) {
-        return executeRoute(authenticationRouter.login(), AuthenticationRouter.ROUTE_LOGIN, userDto);
+        return executeRoute(authenticationRouter.login(), userDto);
     }
 
-    private Optional executeRoute(RouteBuilder routeBuilder, String routeId, Object body) {
+    private Optional<UserEntity> executeRoute(RouteBuilder routeBuilder, Object body) {
         try (CamelContext ctx = new DefaultCamelContext()) {
             ctx.addRoutes(routeBuilder);
             ctx.start();
 
             try (ProducerTemplate producerTemplate = ctx.createProducerTemplate()) {
-                return producerTemplate.requestBody(routeId, body, Optional.class);
+                Object response = producerTemplate.requestBody(AuthenticationRouter.ROUTE_LOGIN, body);
+
+                if (response instanceof Optional) {
+                    @SuppressWarnings("unchecked")
+                    Optional<UserEntity> result = (Optional<UserEntity>) response;
+                    return result;
+                } else if (response instanceof UserEntity) {
+                    return Optional.of((UserEntity) response);
+                } else {
+                    log.warn("Unexpected response type from route {}: {}", AuthenticationRouter.ROUTE_LOGIN,
+                            response != null ? response.getClass().getName() : "null");
+                    return Optional.empty();
+                }
             }
         } catch (Exception ex) {
-            log.error("Error processing route {}: {}", routeId, ex.getMessage(), ex);
+            log.error("Error processing route {}: {}", AuthenticationRouter.ROUTE_LOGIN, ex.getMessage(), ex);
             handleException(ex);
             throw new GatewayException(ex.getMessage());
         }
